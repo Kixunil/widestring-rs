@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="Source to the Rust file `src/lib.rs`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang">
+
+    <title>lib.rs.html -- source</title>
+
+    <link rel="stylesheet" type="text/css" href="../../../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../../../main.css">
+    
+
+    
+    
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        
+        
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content source"><pre class="line-numbers"><span id="1">  1</span>
+<span id="2">  2</span>
+<span id="3">  3</span>
+<span id="4">  4</span>
+<span id="5">  5</span>
+<span id="6">  6</span>
+<span id="7">  7</span>
+<span id="8">  8</span>
+<span id="9">  9</span>
+<span id="10"> 10</span>
+<span id="11"> 11</span>
+<span id="12"> 12</span>
+<span id="13"> 13</span>
+<span id="14"> 14</span>
+<span id="15"> 15</span>
+<span id="16"> 16</span>
+<span id="17"> 17</span>
+<span id="18"> 18</span>
+<span id="19"> 19</span>
+<span id="20"> 20</span>
+<span id="21"> 21</span>
+<span id="22"> 22</span>
+<span id="23"> 23</span>
+<span id="24"> 24</span>
+<span id="25"> 25</span>
+<span id="26"> 26</span>
+<span id="27"> 27</span>
+<span id="28"> 28</span>
+<span id="29"> 29</span>
+<span id="30"> 30</span>
+<span id="31"> 31</span>
+<span id="32"> 32</span>
+<span id="33"> 33</span>
+<span id="34"> 34</span>
+<span id="35"> 35</span>
+<span id="36"> 36</span>
+<span id="37"> 37</span>
+<span id="38"> 38</span>
+<span id="39"> 39</span>
+<span id="40"> 40</span>
+<span id="41"> 41</span>
+<span id="42"> 42</span>
+<span id="43"> 43</span>
+<span id="44"> 44</span>
+<span id="45"> 45</span>
+<span id="46"> 46</span>
+<span id="47"> 47</span>
+<span id="48"> 48</span>
+<span id="49"> 49</span>
+<span id="50"> 50</span>
+<span id="51"> 51</span>
+<span id="52"> 52</span>
+<span id="53"> 53</span>
+<span id="54"> 54</span>
+<span id="55"> 55</span>
+<span id="56"> 56</span>
+<span id="57"> 57</span>
+<span id="58"> 58</span>
+<span id="59"> 59</span>
+<span id="60"> 60</span>
+<span id="61"> 61</span>
+<span id="62"> 62</span>
+<span id="63"> 63</span>
+<span id="64"> 64</span>
+<span id="65"> 65</span>
+<span id="66"> 66</span>
+<span id="67"> 67</span>
+<span id="68"> 68</span>
+<span id="69"> 69</span>
+<span id="70"> 70</span>
+<span id="71"> 71</span>
+<span id="72"> 72</span>
+<span id="73"> 73</span>
+<span id="74"> 74</span>
+<span id="75"> 75</span>
+<span id="76"> 76</span>
+<span id="77"> 77</span>
+<span id="78"> 78</span>
+<span id="79"> 79</span>
+<span id="80"> 80</span>
+<span id="81"> 81</span>
+<span id="82"> 82</span>
+<span id="83"> 83</span>
+<span id="84"> 84</span>
+<span id="85"> 85</span>
+<span id="86"> 86</span>
+<span id="87"> 87</span>
+<span id="88"> 88</span>
+<span id="89"> 89</span>
+<span id="90"> 90</span>
+<span id="91"> 91</span>
+<span id="92"> 92</span>
+<span id="93"> 93</span>
+<span id="94"> 94</span>
+<span id="95"> 95</span>
+<span id="96"> 96</span>
+<span id="97"> 97</span>
+<span id="98"> 98</span>
+<span id="99"> 99</span>
+<span id="100">100</span>
+<span id="101">101</span>
+<span id="102">102</span>
+<span id="103">103</span>
+<span id="104">104</span>
+<span id="105">105</span>
+<span id="106">106</span>
+<span id="107">107</span>
+<span id="108">108</span>
+<span id="109">109</span>
+<span id="110">110</span>
+<span id="111">111</span>
+<span id="112">112</span>
+<span id="113">113</span>
+<span id="114">114</span>
+<span id="115">115</span>
+<span id="116">116</span>
+<span id="117">117</span>
+<span id="118">118</span>
+<span id="119">119</span>
+<span id="120">120</span>
+<span id="121">121</span>
+<span id="122">122</span>
+<span id="123">123</span>
+<span id="124">124</span>
+<span id="125">125</span>
+<span id="126">126</span>
+<span id="127">127</span>
+<span id="128">128</span>
+<span id="129">129</span>
+<span id="130">130</span>
+<span id="131">131</span>
+<span id="132">132</span>
+<span id="133">133</span>
+<span id="134">134</span>
+<span id="135">135</span>
+<span id="136">136</span>
+<span id="137">137</span>
+<span id="138">138</span>
+<span id="139">139</span>
+<span id="140">140</span>
+<span id="141">141</span>
+<span id="142">142</span>
+<span id="143">143</span>
+<span id="144">144</span>
+<span id="145">145</span>
+<span id="146">146</span>
+<span id="147">147</span>
+<span id="148">148</span>
+<span id="149">149</span>
+<span id="150">150</span>
+<span id="151">151</span>
+<span id="152">152</span>
+<span id="153">153</span>
+<span id="154">154</span>
+<span id="155">155</span>
+<span id="156">156</span>
+<span id="157">157</span>
+<span id="158">158</span>
+<span id="159">159</span>
+<span id="160">160</span>
+<span id="161">161</span>
+<span id="162">162</span>
+<span id="163">163</span>
+<span id="164">164</span>
+</pre><pre class='rust '>
+<span class='doccomment'>//! A wide string FFI library for converting to and from Windows Wide &quot;Unicode&quot; strings.</span>
+<span class='doccomment'>//!</span>
+<span class='doccomment'>//! This crate provides two types of wide strings: `WideString` and `WideCString`. They differ</span>
+<span class='doccomment'>//! in the guaruntees they provide. For `WideString`, no guaruntees are made about the underlying</span>
+<span class='doccomment'>//! string data; it is simply a sequence of UTF-16 *partial code units*, which may be ill-formed or</span>
+<span class='doccomment'>//! contain nul values. `WideCString` on the other hand is aware of nul values and is guarunteed to</span>
+<span class='doccomment'>//! be terminated with a nul value (unless unchecked methods are used to construct the</span>
+<span class='doccomment'>//! `WideCString`). Because `WideCString` is a C-style, nul-terminated string, it will have no</span>
+<span class='doccomment'>//! interior nul values. A `WideCString` may still have ill-formed UTF-16 partial code units.</span>
+<span class='doccomment'>//!</span>
+<span class='doccomment'>//! Use `WideString` when you simply need to pass-thru strings, or when you know or don&#39;t care if</span>
+<span class='doccomment'>//! you&#39;re not dealing with a nul-terminated string, such as when string lengths are provided and</span>
+<span class='doccomment'>//! you are only reading strings from FFI, not passing them into FFI.</span>
+<span class='doccomment'>//!</span>
+<span class='doccomment'>//! Use `WideCString` when you must properly handle nul values, and must deal with nul-terminated</span>
+<span class='doccomment'>//! C-style wide strings, such as if you must pass strings into FFI functions.</span>
+<span class='doccomment'>//!</span>
+<span class='doccomment'>//! # Relationship to other Rust Strings</span>
+<span class='doccomment'>//!</span>
+<span class='doccomment'>//! Standard Rust strings `String` and `str` are well-formed Unicode data encoded as UTF-8. The</span>
+<span class='doccomment'>//! standard strings provide proper handling of Unicode and ensure strong safety guaruntees.</span>
+<span class='doccomment'>//!</span>
+<span class='doccomment'>//! `CString` and `CStr` are strings used for C FFI. They handle nul-terminated C-style strings.</span>
+<span class='doccomment'>//! However, they do not have a builtin encoding, and conversions between C-style and other Rust</span>
+<span class='doccomment'>//! strings must specifically encode and decode the strings, and handle possible invalid encoding</span>
+<span class='doccomment'>//! data. They are safe to use only in passing string-like data back and forth from C APIs but do</span>
+<span class='doccomment'>//! do provide any other guaruntees, so may not be well-formed.</span>
+<span class='doccomment'>//!</span>
+<span class='doccomment'>//! `OsString` and `OsStr` are also strings for use with FFI. Unlike `CString`, they do no special</span>
+<span class='doccomment'>//! handling of nul values, but instead have an OS-specified encoding. While, for example, Linux</span>
+<span class='doccomment'>//! systems this is usually UTF-8 encoding, this is not the case for every platform. The encoding</span>
+<span class='doccomment'>//! may not even be 8-bit: on Windows, `OsString` is 16-bit values, but may not always be</span>
+<span class='doccomment'>//! interpreted with UTF-16 encoding. Like `CString`, `OsString` has no additional</span>
+<span class='doccomment'>//! guaruntees and may not be well-formed.</span>
+<span class='doccomment'>//!</span>
+<span class='doccomment'>//! Due to the looser safety of these other string types, conversion to standard Rust `String` is</span>
+<span class='doccomment'>//! lossy, and may require knowledge of the underlying encoding, including platform-specific quirks.</span>
+<span class='doccomment'>//!</span>
+<span class='doccomment'>//! The wide strings in this crate are roughly based on the principles of the string types in</span>
+<span class='doccomment'>//! `std::ffi`, though there are differences. `WideString` and `WideStr` are roughly similar in role</span>
+<span class='doccomment'>//! to `OsString` and `OsStr`, while `WideCString` and `WideCStr` are roughly similar in role to</span>
+<span class='doccomment'>//! `CString` and `CStr`. In fact, on Windows, `WideString` is nearly identical to `OsString`. It</span>
+<span class='doccomment'>//! can be useful to ensure consistent wide character size across other platforms, and that&#39;s where</span>
+<span class='doccomment'>//! these wide string types come into play. Conversion to other string types is very straight</span>
+<span class='doccomment'>//! forward and safe, while conversion directly between standard Rust `String` is a lossy conversion</span>
+<span class='doccomment'>//! just as `OsString` is, where the wide strings are assumed to have some sort of UTF-16 encoding,</span>
+<span class='doccomment'>//! but that encoding may be ill-formed.</span>
+<span class='doccomment'>//!</span>
+<span class='doccomment'>//! # Remarks on Partial Code Units</span>
+<span class='doccomment'>//!</span>
+<span class='doccomment'>//! *Partial code units* are the 16-bit units that comprise UTF-16 sequences. Partial code units</span>
+<span class='doccomment'>//! can specify Unicode code points either as single units or in *surrogate pairs*. Because every</span>
+<span class='doccomment'>//! partial code unit may be part of a surrogate pair, many regular string operations, including</span>
+<span class='doccomment'>//! indexing into a wide string, writing to a wide string, or even iterating a wide string should be</span>
+<span class='doccomment'>//! handled with care and are greatly discouraged. Some operations have safer alternatives provided,</span>
+<span class='doccomment'>//! such as code point iteration instead of partial code unit iteration. Always keep in mind that</span>
+<span class='doccomment'>//! the number of partial code units (`len()`) of a wide string is **not** equivalent to the</span>
+<span class='doccomment'>//! number of Unicode characters in the string, merely the length of the UTF-16 encoding sequence.</span>
+<span class='doccomment'>//! In fact, Unicode code points do not even have a one-to-one mapping with characters!</span>
+<span class='doccomment'>//!</span>
+<span class='doccomment'>//! # Examples</span>
+<span class='doccomment'>//!</span>
+<span class='doccomment'>//! The following example uses `WideString` to get windows error messages, since `FormatMessageW`</span>
+<span class='doccomment'>//! returns a string length for us, and we don&#39;t need to pass error messages into other FFI</span>
+<span class='doccomment'>//! functions so we don&#39;t need to worry about nuls.</span>
+<span class='doccomment'>//!</span>
+<span class='doccomment'>//! ```rust</span>
+<span class='doccomment'>//! # #[cfg(not(windows))]</span>
+<span class='doccomment'>//! # fn main() {}</span>
+<span class='doccomment'>//! # extern crate winapi;</span>
+<span class='doccomment'>//! # extern crate kernel32;</span>
+<span class='doccomment'>//! # extern crate widestring;</span>
+<span class='doccomment'>//! # #[cfg(windows)]</span>
+<span class='doccomment'>//! # fn main() {</span>
+<span class='doccomment'>//! use winapi::*;</span>
+<span class='doccomment'>//! use kernel32::{FormatMessageW, LocalFree};</span>
+<span class='doccomment'>//! use std::ptr;</span>
+<span class='doccomment'>//! use widestring::WideString;</span>
+<span class='doccomment'>//! # let error_code: DWORD = 0;</span>
+<span class='doccomment'>//!</span>
+<span class='doccomment'>//! let widestr: WideString;</span>
+<span class='doccomment'>//! unsafe {</span>
+<span class='doccomment'>//!     // First, get a string buffer from some windows api such as FormatMessageW...</span>
+<span class='doccomment'>//!     let mut buffer: LPWSTR = ptr::null_mut();</span>
+<span class='doccomment'>//!     let strlen = FormatMessageW(FORMAT_MESSAGE_FROM_SYSTEM |</span>
+<span class='doccomment'>//!                                 FORMAT_MESSAGE_ALLOCATE_BUFFER |</span>
+<span class='doccomment'>//!                                 FORMAT_MESSAGE_IGNORE_INSERTS,</span>
+<span class='doccomment'>//!                                 ptr::null(),</span>
+<span class='doccomment'>//!                                 error_code, // error code from GetLastError()</span>
+<span class='doccomment'>//!                                 0,</span>
+<span class='doccomment'>//!                                 (&amp;mut buffer as *mut LPWSTR) as LPWSTR,</span>
+<span class='doccomment'>//!                                 0,</span>
+<span class='doccomment'>//!                                 ptr::null_mut());</span>
+<span class='doccomment'>//!</span>
+<span class='doccomment'>//!     // Get the buffer as a wide string</span>
+<span class='doccomment'>//!     widestr = WideString::from_ptr(buffer, strlen as usize);</span>
+<span class='doccomment'>//!     // Since WideString creates an owned copy, it&#39;s safe to free original buffer now</span>
+<span class='doccomment'>//!     // If you didn&#39;t want an owned copy, you could use &amp;WideStr.</span>
+<span class='doccomment'>//!     LocalFree(buffer as HLOCAL);</span>
+<span class='doccomment'>//! }</span>
+<span class='doccomment'>//! // Convert to a regular Rust String and use it to your heart&#39;s desire!</span>
+<span class='doccomment'>//! let message = widestr.to_string_lossy();</span>
+<span class='doccomment'>//! # assert_eq!(message, &quot;The operation completed successfully.\r\n&quot;);</span>
+<span class='doccomment'>//! # }</span>
+<span class='doccomment'>//! ```</span>
+<span class='doccomment'>//!</span>
+<span class='doccomment'>//! The following example is the functionally the same, only using `WideCString` instead.</span>
+<span class='doccomment'>//!</span>
+<span class='doccomment'>//! ```rust</span>
+<span class='doccomment'>//! # #[cfg(not(windows))]</span>
+<span class='doccomment'>//! # fn main() {}</span>
+<span class='doccomment'>//! # extern crate winapi;</span>
+<span class='doccomment'>//! # extern crate kernel32;</span>
+<span class='doccomment'>//! # extern crate widestring;</span>
+<span class='doccomment'>//! # #[cfg(windows)]</span>
+<span class='doccomment'>//! # fn main() {</span>
+<span class='doccomment'>//! use winapi::*;</span>
+<span class='doccomment'>//! use kernel32::{FormatMessageW, LocalFree};</span>
+<span class='doccomment'>//! use std::ptr;</span>
+<span class='doccomment'>//! use widestring::WideCString;</span>
+<span class='doccomment'>//! # let error_code: DWORD = 0;</span>
+<span class='doccomment'>//!</span>
+<span class='doccomment'>//! let widestr: WideCString;</span>
+<span class='doccomment'>//! unsafe {</span>
+<span class='doccomment'>//!     // First, get a string buffer from some windows api such as FormatMessageW...</span>
+<span class='doccomment'>//!     let mut buffer: LPWSTR = ptr::null_mut();</span>
+<span class='doccomment'>//!     FormatMessageW(FORMAT_MESSAGE_FROM_SYSTEM |</span>
+<span class='doccomment'>//!                    FORMAT_MESSAGE_ALLOCATE_BUFFER |</span>
+<span class='doccomment'>//!                    FORMAT_MESSAGE_IGNORE_INSERTS,</span>
+<span class='doccomment'>//!                    ptr::null(),</span>
+<span class='doccomment'>//!                    error_code, // error code from GetLastError()</span>
+<span class='doccomment'>//!                    0,</span>
+<span class='doccomment'>//!                    (&amp;mut buffer as *mut LPWSTR) as LPWSTR,</span>
+<span class='doccomment'>//!                    0,</span>
+<span class='doccomment'>//!                    ptr::null_mut());</span>
+<span class='doccomment'>//!</span>
+<span class='doccomment'>//!     // Get the buffer as a wide string</span>
+<span class='doccomment'>//!     widestr = WideCString::from_ptr_str(buffer);</span>
+<span class='doccomment'>//!     // Since WideCString creates an owned copy, it&#39;s safe to free original buffer now</span>
+<span class='doccomment'>//!     // If you didn&#39;t want an owned copy, you could use &amp;WideCStr.</span>
+<span class='doccomment'>//!     LocalFree(buffer as HLOCAL);</span>
+<span class='doccomment'>//! }</span>
+<span class='doccomment'>//! // Convert to a regular Rust String and use it to your heart&#39;s desire!</span>
+<span class='doccomment'>//! let message = widestr.to_string_lossy();</span>
+<span class='doccomment'>//! # assert_eq!(message, &quot;The operation completed successfully.\r\n&quot;);</span>
+<span class='doccomment'>//! # }</span>
+<span class='doccomment'>//! ```</span>
+
+<span class='attribute'>#<span class='op'>!</span>[<span class='ident'>warn</span>(<span class='ident'>missing_docs</span>,
+        <span class='ident'>missing_copy_implementations</span>,
+        <span class='ident'>missing_debug_implementations</span>,
+        <span class='ident'>trivial_casts</span>,
+        <span class='ident'>trivial_numeric_casts</span>,
+        <span class='ident'>unstable_features</span>,
+        <span class='ident'>unused_extern_crates</span>,
+        <span class='ident'>unused_import_braces</span>,
+        <span class='ident'>unused_qualifications</span>)]</span>
+
+<span class='kw'>mod</span> <span class='ident'>widestring</span>;
+<span class='kw'>mod</span> <span class='ident'>widecstring</span>;
+<span class='kw'>mod</span> <span class='ident'>platform</span>;
+
+<span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>widestring</span>::{<span class='ident'>WideString</span>, <span class='ident'>WideStr</span>};
+<span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>widecstring</span>::{<span class='ident'>WideCString</span>, <span class='ident'>WideCStr</span>, <span class='ident'>NulError</span>, <span class='ident'>MissingNulError</span>};
+</pre>
+</section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../../../";
+        window.currentCrate = "widestring";
+        window.playgroundUrl = "";
+    </script>
+    <script src="../../../jquery.js"></script>
+    <script src="../../../main.js"></script>
+    
+    <script defer src="../../../search-index.js"></script>
+</body>
+</html>

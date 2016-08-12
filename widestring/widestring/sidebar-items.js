@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["WideStr","Wide string reference for `WideString`."],["WideString","An owned, mutable \"wide\" string for windows FFI that is **not** nul-aware."]]});
